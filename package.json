@@ -11,7 +11,8 @@
   "author": "Victor",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "mongoose": "^9.10.2"
   },
   "devDependencies": {
     "eslint": "8.56.0",
