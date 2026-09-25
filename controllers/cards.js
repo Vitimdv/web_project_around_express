@@ -80,7 +80,7 @@ const likeCard = async (req, res) => {
     });
     return res.status(200).json({ data: card });
   } catch (err) {
-    if ((err.statusCode = 404)) {
+    if (err.statusCode === 404) {
       return res.status(404).json({ message: err.message });
     }
     if (err.name === "CastError") {
@@ -105,7 +105,7 @@ const dislikeCard = async (req, res) => {
     });
     return res.status(200).json({ data: card });
   } catch (err) {
-    if ((err.statusCode = 404)) {
+    if (err.statusCode === 404) {
       return res.status(404).json({ message: err.message });
     }
     if (err.name === "CastError") {

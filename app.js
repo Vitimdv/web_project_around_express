@@ -8,11 +8,17 @@ const { PORT = 3000 } = process.env;
 
 const app = express();
 
-mongoose.connect("mongodb://localhost:27017/aroundb");
+mongoose
+  .connect("mongodb://localhost:27017/aroundb")
+  .then(() => {
+    console.log("Conectado ao MongoDB");
+  })
+  .catch((err) => {
+    console.error("Erro ao conectar ao MongoDB:", err);
+  });
 
 app.use(express.json());
 
-app.use("/users", usersRouter);
 app.use((req, res, next) => {
   req.user = {
     _id: "6ab44a4a107946edbbca5c63",
@@ -20,6 +26,7 @@ app.use((req, res, next) => {
 
   next();
 });
+app.use("/users", usersRouter);
 app.use("/cards", cardsRouter);
 
 app.use((req, res) => {

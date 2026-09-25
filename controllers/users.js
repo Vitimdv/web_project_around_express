@@ -31,7 +31,12 @@ const createUser = (req, res) => {
 
   User.create({ name, about, avatar })
     .then((user) => res.status(201).send(user))
-    .catch(() => res.status(500).send({ message: "Erro ao criar usuário" }));
+    .catch((err) => {
+      if (err.statusCode === 400) {
+        return res.status(400).json({ message: "Dados Inválidos" });
+      }
+      return res.status(500).send({ message: "Erro ao criar usuário" });
+    });
 };
 
 const updateProfile = async (req, res) => {
