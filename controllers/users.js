@@ -21,9 +21,12 @@ const getUserById = (req, res) => {
 
       return res.status(200).send(user);
     })
-    .catch(() =>
-      res.status(500).send({ message: "Ocorreu um erro no servidor" }),
-    );
+    .catch((err) => {
+      if (err.name === "CastError") {
+        return res.status(400).send({ message: "ID do usuário fornecido é inválido" });
+      }
+      return res.status(500).send({ message: "Ocorreu um erro no servidor" });
+    });
 };
 
 const createUser = (req, res) => {
@@ -32,8 +35,8 @@ const createUser = (req, res) => {
   User.create({ name, about, avatar })
     .then((user) => res.status(201).send(user))
     .catch((err) => {
-      if (err.statusCode === 400) {
-        return res.status(400).json({ message: "Dados Inválidos" });
+      if (err.name === "ValidationError") {
+        return res.status(400).send({ message: "Dados inválidos passados para criação de usuário" });
       }
       return res.status(500).send({ message: "Erro ao criar usuário" });
     });
@@ -82,7 +85,7 @@ const updateAvatar = async (req, res) => {
       return res.status(404).json({ message: err.message });
     }
     if (err.name === "ValidationError") {
-      return res.status(400).json({ messagew: "URL do avatar inválida" });
+      return res.status(400).json({ message: "URL do avatar inválida" });
     }
     return res.status(500).json({ message: "Erro interno do servidor" });
   }

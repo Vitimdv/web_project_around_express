@@ -21,11 +21,11 @@ const createCard = async (req, res) => {
       link,
       owner: req.user._id,
     });
-    return req.status(201).json({ data: card });
-  } catch {
+    return res.status(201).json({ data: card });
+  } catch (error) {
     if (error.name === "ValidationError") {
-      return res.status().json({
-        message: 'Dados invalidos ao tentar criar "card"',
+      return res.status(400).json({
+        message: 'Dados inválidos ao tentar criar "card"',
         details: error.message,
       });
     }
